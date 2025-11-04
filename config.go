@@ -516,6 +516,7 @@ func getConfig() *types.Configuration {
 	v.SetDefault("AWS.S3.MinimumPriority", "")
 	v.SetDefault("AWS.S3.Endpoint", "")
 	v.SetDefault("AWS.S3.ObjectCannedACL", "bucket-owner-full-control")
+	v.SetDefault("AWS.S3.SSEKmsKeyId", "")
 
 	v.SetDefault("AWS.SecurityLake.Bucket", "")
 	v.SetDefault("AWS.SecurityLake.Region", "")

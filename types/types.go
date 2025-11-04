@@ -426,6 +426,7 @@ type awsS3Config struct {
 	MinimumPriority string
 	Endpoint        string
 	ObjectCannedACL string
+	SSEKmsKeyId     string
 }
 
 type awsKinesisConfig struct {

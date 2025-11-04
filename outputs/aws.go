@@ -213,12 +213,19 @@ func (c *Client) UploadS3(falcopayload types.FalcoPayload) {
 	if c.Config.AWS.S3.Endpoint != "" {
 		awsConfig = awsConfig.WithEndpoint(c.Config.AWS.S3.Endpoint)
 	}
-	resp, err := s3.New(c.AWSSession, awsConfig).PutObject(&s3.PutObjectInput{
+	input := &s3.PutObjectInput{
 		Bucket: aws.String(c.Config.AWS.S3.Bucket),
 		Key:    aws.String(key),
 		Body:   bytes.NewReader(f),
 		ACL:    aws.String(c.Config.AWS.S3.ObjectCannedACL),
-	})
+	}
+
+	if c.Config.AWS.S3.SSEKmsKeyId != "" {
+		input.ServerSideEncryption = aws.String("aws:kms")
+		input.SSEKMSKeyId = aws.String(c.Config.AWS.S3.SSEKmsKeyId)
+	}
+
+	resp, err := s3.New(c.AWSSession, awsConfig).PutObject(input)
 	if err != nil {
 		go c.CountMetric("outputs", 1, []string{"output:awss3", "status:error"})
 		c.PromStats.Outputs.With(map[string]string{"destination": "awss3", "status": Error}).Inc()
