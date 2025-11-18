@@ -505,6 +505,26 @@ type statsdOutputConfig struct {
 
 type azureConfig struct {
 	EventHub eventHub
+	Blob     blobStorageConfig
+	ADLS     adlsStorageConfig
+}
+
+// Azure Gen1 Blob Storage
+type blobStorageConfig struct {
+	// name of the account from the endpoint url "https://MYSTORAGEACCOUNT.dfs.core.windows.net/"
+	Account         string
+	Prefix          string
+	Container       string
+	MinimumPriority string
+}
+
+// ADLS Gen2 storage
+type adlsStorageConfig struct {
+	// name of the account from the endpoint url "https://MYSTORAGEACCOUNT.dfs.core.windows.net/"
+	Account         string
+	Prefix          string
+	Container       string
+	MinimumPriority string
 }
 
 type eventHub struct {
@@ -873,6 +893,8 @@ type Statistics struct {
 	Webhook           *expvar.Map
 	Webex             *expvar.Map
 	AzureEventHub     *expvar.Map
+	AzureBlob         *expvar.Map
+	AzureADLS         *expvar.Map
 	GCPPubSub         *expvar.Map
 	GCPStorage        *expvar.Map
 	GCPCloudFunctions *expvar.Map
